@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Cold Storage Design & Applications</title>
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#004FFF',
+                        'secondary': '#00A4FF',
+                        'accent-hot': '#FF006A',
+                        'accent-warm': '#FFC600',
+                        'dark-text': '#343840',
+                        'light-bg': '#F3F4F6',
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            color: #343840;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 500px;
+            }
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            line-height: 1;
+            color: #004FFF;
+        }
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-left-width: 6px;
+        }
+    </style>
+    
+</head>
+<body class="bg-light-bg text-dark-text">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary mb-4">Refrigeration & Cold Storage</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-dark-text mb-6">Design, Insulation, and Applications</h2>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto">A cold storage facility is a critical system for preserving quality and ensuring the safety of perishable goods. This infographic explores the core design principles, engineering, and product-specific needs that make this possible.</p>
+        </header>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">The Four Pillars of Cold Storage Design</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">A successful facility must perfectly balance four key factors. Failure in any one of these pillars leads to product spoilage, energy waste, and financial loss.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card text-center">
+                    <span class="text-5xl">🌡️</span>
+                    <h3 class="text-xl font-bold text-primary mt-4 mb-2">1. Temperature</h3>
+                    <p class="text-gray-600">Maintaining a precise and stable temperature is the primary and most critical goal.</p>
+                </div>
+                <div class="card text-center">
+                    <span class="text-5xl">💧</span>
+                    <h3 class="text-xl font-bold text-primary mt-4 mb-2">2. Humidity</h3>
+                    <p class="text-gray-600">Controlling moisture to prevent product dehydration (wilting) or mold growth.</p>
+                </div>
+                <div class="card text-center">
+                    <span class="text-5xl">💨</span>
+                    <h3 class="text-xl font-bold text-primary mt-4 mb-2">3. Air Circulation</h3>
+                    <p class="text-gray-600">Ensuring uniform temperature distribution to avoid "hot spots" or freezing.</p>
+                </div>
+                <div class="card text-center">
+                    <span class="text-5xl">🗺️</span>
+                    <h3 class="text-xl font-bold text-primary mt-4 mb-2">4. Zoning</h3>
+                    <p class="text-gray-600">Designing separate rooms ("zones") for different products and temperature needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="card">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">The Core Challenge: The "Cooling Load"</h2>
+                <p class="text-lg text-gray-700 mb-8">The most important calculation in cold storage design is the "Cooling Load." This determines the size and power of the cooling plant required. It is the total amount of heat from all sources that the system must remove every 24 hours to maintain the set temperature.</p>
+                <div class="chart-container h-72 md:h-96" style="max-width:500px;">
+                    <canvas id="coolingLoadChart"></canvas>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm text-gray-700">
+                    <div class="flex items-center">
+                        <span class="w-4 h-4 rounded mr-2" style="background-color: #004FFF;"></span>
+                        <span>Transmission Load (Walls/Roof)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-4 h-4 rounded mr-2" style="background-color: #FF006A;"></span>
+                        <span>Infiltration Load (Doors)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-4 h-4 rounded mr-2" style="background-color: #00A4FF;"></span>
+                        <span>Product Load (Goods)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-4 h-4 rounded mr-2" style="background-color: #FFC600;"></span>
+                        <span>Internal Load (Lights/People)</span>
+                    </div>
+                </div>
+
+                <p class="text-sm text-gray-600 text-center mt-4">This chart shows a typical breakdown of heat sources. "Transmission Load" (heat leaking through walls) and "Infiltration Load" (heat from open doors) are consistently the largest problems to solve.</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">The "Heart": The Vapor Compression Cycle</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">This 4-step process is the engine of all modern refrigeration. It doesn't "create cold" — it actively moves heat from inside the cold room to the outside environment.</p>
+            <div class="card">
+                <div class="flex flex-col md:flex-row items-stretch justify-between space-y-4 md:space-y-0 md:space-x-2">
+                    <div class="flex-1 p-4 bg-white rounded-lg shadow border-l-4 border-primary">
+                        <span class="text-sm font-bold text-primary">1. EVAPORATOR (INSIDE)</span>
+                        <p class="mt-1 text-sm text-gray-700">Cold refrigerant absorbs heat from the room's air and "boils" into a gas.</p>
+                    </div>
+                    <div class="flex-shrink-0 flex items-center justify-center"><span class="flow-arrow transform rotate-90 md:rotate-0">→</span></div>
+                    <div class="flex-1 p-4 bg-white rounded-lg shadow border-l-4 border-accent-hot">
+                        <span class="text-sm font-bold text-accent-hot">2. COMPRESSOR</span>
+                        <p class="mt-1 text-sm text-gray-700">Squeezes the gas, making it hot and high-pressure.</p>
+                    </div>
+                    <div class="flex-shrink-0 flex items-center justify-center"><span class="flow-arrow transform rotate-90 md:rotate-0">→</span></div>
+                    <div class="flex-1 p-4 bg-white rounded-lg shadow border-l-4 border-accent-warm">
+                        <span class="text-sm font-bold text-accent-warm">3. CONDENSER (OUTSIDE)</span>
+                        <p class="mt-1 text-sm text-gray-700">The hot gas releases heat to the outside air, condensing back into a liquid.</p>
+                    </div>
+                    <div class="flex-shrink-0 flex items-center justify-center"><span class="flow-arrow transform rotate-90 md:rotate-0">→</span></div>
+                    <div class="flex-1 p-4 bg-white rounded-lg shadow border-l-4 border-secondary">
+                        <span class="text-sm font-bold text-secondary">4. EXPANSION VALVE</span>
+                        <p class="mt-1 text-sm text-gray-700">The liquid is forced through a tiny nozzle, causing a massive pressure and temperature drop, starting the cycle again.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">The "Shield": Insulation</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">Insulation's job is to stop heat from leaking IN. Better insulation directly reduces the "Transmission Load," which is the largest continuous drain on energy. A higher R-value means better heat resistance.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="card">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Key Insulation Properties</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong class="text-primary">Thermal Resistance (R-value):</strong> The most important metric. Higher is better.</li>
+                        <li><strong class="text-dark-text">Vapor Barrier:</strong> A layer on the *warm* side to stop moisture from getting in and freezing, which destroys R-value.</li>
+                        <li><strong class="text-dark-text">Compressive Strength:</strong> Ability to withstand pressure, crucial for floor insulation.</li>
+                        <li><strong class="text-dark-text">Fire Resistance:</strong> Critical for safety, as most insulation is foam.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Relative R-Value Comparison</h3>
+                    <div class="chart-container h-64" style="max-width:500px;">
+                        <canvas id="insulationChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 text-center mt-4">PUR/PIR offers the highest R-value per inch, making it the industry standard for building thin, efficient walls.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">One Size Does NOT Fit All</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">Different products have vastly different storage requirements. Storing bananas at apple temperatures will destroy them. A multi-product facility must have separate, isolated zones for each category.</p>
+            <div class="card">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Product Storage Temperature Ranges (°C)</h3>
+                <div class="chart-container h-96 md:h-[500px]">
+                    <canvas id="productTempChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-600 text-center mt-4">This chart shows the required temperature ranges for various products. Note the critical differences: "Tropical" fruits must be kept cool, not cold, while "Frozen" goods require deep freezing to maintain quality.</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Product-Specific Challenges & Focus</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">Beyond temperature, each product category has unique challenges that the design must address.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card flex flex-col">
+                    <h3 class="text-xl font-bold text-primary mb-3">🍓 Fruits & Vegetables</h3>
+                    <p class="text-sm text-gray-600 flex-grow"><strong class="text-dark-text">Challenge:</strong> They are alive and "respire," producing heat and ripening gases.</p>
+                    <p class="text-sm text-gray-600 mt-2"><strong class="text-accent-hot">Design Focus:</strong> High humidity (85-95%) to prevent wilting and specialized "Controlled Atmosphere" (CA) storage to slow ripening.</p>
+                </div>
+                <div class="card flex flex-col">
+                    <h3 class="text-xl font-bold text-primary mb-3">🥛 Milk & Dairy</h3>
+                    <p class="text-sm text-gray-600 flex-grow"><strong class="text-dark-text">Challenge:</strong> Highly susceptible to rapid bacterial growth.</p>
+                    <p class="text-sm text-gray-600 mt-2"><strong class="text-accent-hot">Design Focus:</strong> Strict temperature (2-4°C, never freeze), and extreme hygiene (stainless steel, easy-to-clean surfaces).</p>
+                </div>
+                <div class="card flex flex-col">
+                    <h3 class="text-xl font-bold text-primary mb-3">🥩 Meat & Poultry</h3>
+                    <p class="text-sm text-gray-600 flex-grow"><strong class="text-dark-text">Challenge:</strong> High potential for pathogenic bacteria.</p>
+                    <p class="text-sm text-gray-600 mt-2"><strong class="text-accent-hot">Design Focus:</strong> Strict "Blast Freezing" (-35°C) to freeze rapidly, and physical zoning to prevent cross-contamination.</p>
+                </div>
+                <div class="card flex flex-col">
+                    <h3 class="text-xl font-bold text-primary mb-3">🐟 Marine Products</h3>
+                    <p class="text-sm text-gray-600 flex-grow"><strong class="text-dark-text">Challenge:</strong> Extremely rapid spoilage due to enzymes.</p>
+                    <p class="text-sm text-gray-600 mt-2"><strong class="text-accent-hot">Design Focus:</strong> On-site flake ice machines, high humidity, and corrosion-resistant (stainless steel) equipment.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 pt-8 border-t border-gray-300">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Key Takeaways</h3>
+            <p class="text-gray-600 max-w-4xl mx-auto">A successful cold storage is a holistic system. The Cooling Load calculation is the foundation, Insulation is the most critical factor for efficiency, and a "One-Size-Fits-All" approach is a recipe for failure. Every design must be tailored to the specific products it protects.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            function wrapLabels(label) {
+                if (typeof label === 'string' && label.length > 16) {
+                    const words = label.split(' ');
+                    let lines = [];
+                    let currentLine = '';
+                    words.forEach((word, index) => {
+                        const testLine = currentLine ? currentLine + ' ' + word : word;
+                        if (testLine.length > 16 && currentLine.length > 0) {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        } else {
+                            currentLine = testLine;
+                        }
+                    });
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            }
+
+            const sharedTooltipCallbacks = {
+                title: function(tooltipItems) {
+                    if (!tooltipItems || !tooltipItems.length) return '';
+                    const item = tooltipItems[0];
+                    const label = item.chart?.data?.labels?.[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : (label || '');
+                },
+                label: function(context) {
+                    const val = context.raw;
+                    if (Array.isArray(val)) return `Range: ${val[0]}°C to ${val[1]}°C`;
+                    return context.formattedValue ?? val;
+                }
+            };
+
+            const coolingLoadCtx = document.getElementById('coolingLoadChart')?.getContext('2d');
+            if (coolingLoadCtx) {
+                const coolingLoadLabels = [
+                    'Transmission Load (Walls/Roof)', 
+                    'Infiltration Load (Doors)', 
+                    'Product Load (Goods)', 
+                    'Internal Load (Lights/People)'
+                ].map(wrapLabels);
+                
+                new Chart(coolingLoadCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: coolingLoadLabels,
+                        datasets: [{
+                            label: 'Heat Load Source (%)',
+                            data: [40, 25, 20, 15],
+                            backgroundColor: [
+                                '#004FFF', 
+                                '#FF006A', 
+                                '#00A4FF', 
+                                '#FFC600'  
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    title: sharedTooltipCallbacks.title
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            const insulationCtx = document.getElementById('insulationChart')?.getContext('2d');
+            if (insulationCtx) {
+                new Chart(insulationCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Expanded Polystyrene (EPS)', 'Extruded Polystyrene (XPS)', 'Polyurethane (PUR/PIR)'].map(wrapLabels),
+                        datasets: [{
+                            label: 'Relative R-Value',
+                            data: [55, 70, 100],
+                            backgroundColor: [
+                                '#FFC600',
+                                '#00A4FF',
+                                '#004FFF'
+                            ],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    title: sharedTooltipCallbacks.title
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Relative R-Value (Higher is Better)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const productTempCtx = document.getElementById('productTempChart')?.getContext('2d');
+            if (productTempCtx) {
+                const productTempLabels = [
+                    'Fruits (Temperate: Apples)',
+                    'Fruits (Tropical: Bananas)',
+                    'Milk & Dairy',
+                    'Meat (Chilled)',
+                    'Meat (Frozen)',
+                    'Marine (Fresh / on Ice)',
+                    'Marine (Frozen)'
+                ].map(wrapLabels);
+
+                new Chart(productTempCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: productTempLabels,
+                        datasets: [{
+                            label: 'Temperature Range °C',
+                            data: [
+                                [0, 4],    
+                                [12, 15],  
+                                [2, 4],    
+                                [-1, 2],   
+                                [-25, -18],
+                                [0, 1],    
+                                [-30, -25] 
+                            ],
+                            backgroundColor: [
+                                '#00A4FF',
+                                '#FFC600',
+                                '#00A4FF',
+                                '#FF006A',
+                                '#004FFF',
+                                '#00A4FF',
+                                '#004FFF'
+                            ],
+                            borderRadius: 4,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: sharedTooltipCallbacks.title,
+                                    label: function(context) {
+                                        const val = context.raw;
+                                        return `Range: ${val[0]}°C to ${val[1]}°C`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Temperature Range (°C)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
+
